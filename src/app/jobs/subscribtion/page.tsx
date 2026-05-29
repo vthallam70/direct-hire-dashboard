@@ -30,7 +30,7 @@ const AVAILABLE_PLANS = [
     badge: 'Save 38%',
     price: { monthly: '$9.99', quarterly: '$6.99' },
     original: { monthly: '', quarterly: '$9.99/monthly' },
-    billing: { monthly: '', quarterly: 'BILLED QUARTERLY, $20.99' },
+    billing: { monthly: 'BILLED MONTHLY', quarterly: 'BILLED QUARTERLY, $20.99' },
     cta: 'dark' as const,
     features: ['50 Auto Apply per month', '10 Resume Credits'],
   },
@@ -41,7 +41,7 @@ const AVAILABLE_PLANS = [
     current: true,
     price: { monthly: '$25.99', quarterly: '$15.99' },
     original: { monthly: '', quarterly: '$25.99/monthly' },
-    billing: { monthly: '', quarterly: 'BILLED QUARTERLY, $47.99' },
+    billing: { monthly: 'BILLED MONTHLY', quarterly: 'BILLED QUARTERLY, $47.99' },
     cta: 'primary' as const,
     features: ['150 Auto Apply per month', '50 Resume Credits'],
   },
@@ -51,7 +51,7 @@ const AVAILABLE_PLANS = [
     badge: 'Save 50%',
     price: { monthly: '$59.99', quarterly: '$29.99' },
     original: { monthly: '', quarterly: '$59.99/monthly' },
-    billing: { monthly: '', quarterly: 'BILLED QUARTERLY, $89.99' },
+    billing: { monthly: 'BILLED MONTHLY', quarterly: 'BILLED QUARTERLY, $89.99' },
     cta: 'dark' as const,
     features: ['300 Auto Apply per month', '150 Resume Credits'],
   },
@@ -85,7 +85,15 @@ export default function SubscribtionPage() {
   const currentPlan = useMemo(() => AVAILABLE_PLANS.find(item => item.current), [])
   const activePlanName = currentPlan?.name ?? 'Free'
   const activeTierLabel = currentPlan ? ` (${CURRENT_MEMBER.tier})` : ''
-  const serviceRange = `${CURRENT_MEMBER.serviceStart} - ${CURRENT_MEMBER.serviceEnd}`
+  const formatServiceDate = (iso: string) => {
+    const [y, m, d] = iso.split('-').map(Number)
+    return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    })
+  }
+  const serviceRange = `${formatServiceDate(CURRENT_MEMBER.serviceStart)} – ${formatServiceDate(CURRENT_MEMBER.serviceEnd)}`
   const subTitleText = `Hi ${CURRENT_MEMBER.name}, you are currently using the ${activePlanName}${activeTierLabel} plan. Service time: ${serviceRange}.`
   const memberInitial = CURRENT_MEMBER.name.trim().charAt(0).toUpperCase() || 'U'
   const memberAvatarTone = useMemo(() => {
@@ -163,7 +171,7 @@ export default function SubscribtionPage() {
               <a href="/jobs/subscribtion" className="jb-user-menu-item sub-user-menu-item--active">
                 <CreditCard size={18} strokeWidth={1.9} />
                 <span className="sub-menu-label-row">
-                  <span>subscribtion</span>
+                  <span>Subscription</span>
                   <span className="sub-menu-trial-pill">3-days free trial</span>
                 </span>
               </a>
@@ -177,7 +185,7 @@ export default function SubscribtionPage() {
         <div className="sub-page">
           <div className="sub-header">
             <div>
-              <p className="sub-kicker">Subscribtion</p>
+              <p className="sub-kicker">Subscription</p>
               <h1 className="sub-title">
                 We've got a plan that's <span className="text-accent-underline">Perfect</span> for you
               </h1>
@@ -221,7 +229,6 @@ export default function SubscribtionPage() {
 
                 <div className="sub-plan-name-row">
                   <p className="plan-name">{plan.name}</p>
-                  {plan.current ? <span className="sub-current-pill">Current Plan</span> : null}
                 </div>
                 <p className="plan-desc">{plan.desc}</p>
 

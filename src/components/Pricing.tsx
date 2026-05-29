@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Sparkles } from 'lucide-react'
 
-type Billing = 'monthly' | 'quarterly'
+type Billing = 'monthly' | 'yearly'
 
 interface Plan {
   name: string
@@ -21,10 +21,10 @@ const plans: Plan[] = [
   {
     name: 'Basic',
     desc: 'For basic features to kickstart your job search efficiency',
-    badge: 'Save 38%',
-    price:    { monthly: '$9.99',  quarterly: '$6.99' },
-    original: { monthly: '', quarterly: '$9.99/monthly' },
-    billing:  { monthly: '', quarterly: 'BILLED QUARTERLY, $20.99' },
+    badge: 'Save 20%',
+    price:    { monthly: '$9.99',  yearly: '$7.99'  },
+    original: { monthly: '',        yearly: '$9.99/monthly' },
+    billing:  { monthly: '',        yearly: 'BILLED YEARLY, $95.88' },
     cta: 'dark',
     features: ['50 Auto Apply per month', '10 Resume Credits'],
   },
@@ -32,19 +32,19 @@ const plans: Plan[] = [
     name: 'Pro',
     desc: 'Unlock advanced AI capacities, maximize your job hunting success',
     popular: true,
-    price:    { monthly: '$25.99', quarterly: '$15.99' },
-    original: { monthly: '', quarterly: '$25.99/monthly' },
-    billing:  { monthly: '', quarterly: 'BILLED QUARTERLY, $47.99' },
+    price:    { monthly: '$25.99', yearly: '$20.99' },
+    original: { monthly: '',        yearly: '$25.99/monthly' },
+    billing:  { monthly: '',        yearly: 'BILLED YEARLY, $251.88' },
     cta: 'primary',
     features: ['150 Auto Apply per month', '50 Resume Credits'],
   },
   {
     name: 'Pro+',
     desc: 'Unlock advanced AI capacities, maximize your job hunting success',
-    badge: 'Save 50%',
-    price:    { monthly: '$59.99', quarterly: '$29.99' },
-    original: { monthly: '', quarterly: '$59.99/monthly' },
-    billing:  { monthly: '', quarterly: 'BILLED QUARTERLY, $89.99' },
+    badge: 'Save 20%',
+    price:    { monthly: '$59.99', yearly: '$47.99' },
+    original: { monthly: '',        yearly: '$59.99/monthly' },
+    billing:  { monthly: '',        yearly: 'BILLED YEARLY, $575.88' },
     cta: 'dark',
     features: ['300 Auto Apply per month', '150 Resume Credits'],
   },
@@ -54,7 +54,7 @@ const checkSrc = '/img/Check.svg'
 
 export default function Pricing() {
   const [billing, setBilling] = useState<Billing>('monthly')
-  const amountPeriodLabel = billing === 'monthly' ? '/Month' : '/quarter'
+  const amountPeriodLabel = billing === 'monthly' ? '/Month' : '/Month'
 
   return (
     <section className="pricing" id="pricing">
@@ -80,10 +80,10 @@ export default function Pricing() {
             Monthly
           </button>
           <button
-            className={`toggle-btn${billing === 'quarterly' ? ' toggle-btn--active' : ''}`}
-            onClick={() => setBilling('quarterly')}
+            className={`toggle-btn${billing === 'yearly' ? ' toggle-btn--active' : ''}`}
+            onClick={() => setBilling('yearly')}
           >
-            Quarterly <span className="toggle-save">Save up to 50%</span>
+            Yearly <span className="toggle-save">Save 20%</span>
           </button>
         </div>
 
@@ -96,10 +96,10 @@ export default function Pricing() {
               {plan.popular && (
                 <div className="plan-popular">
                   <Sparkles size={12} strokeWidth={2.2} />
-                  <span>Most Popular{billing === 'quarterly' ? ' (Save 38%)' : ''}</span>
+                  <span>Most Popular{billing === 'yearly' ? ' (Save 20%)' : ''}</span>
                 </div>
               )}
-              {plan.badge && billing === 'quarterly' && <span className="plan-badge">{plan.badge}</span>}
+              {plan.badge && billing === 'yearly' && <span className="plan-badge">{plan.badge}</span>}
 
               <p className="plan-name">{plan.name}</p>
               <p className="plan-desc">{plan.desc}</p>
@@ -111,10 +111,10 @@ export default function Pricing() {
                 </span>
                 <div className="plan-price-meta">
                   <span className={`plan-original${plan.original[billing] ? '' : ' is-empty'}`}>
-                    {plan.original[billing] || '\u00A0'}
+                    {plan.original[billing] || ' '}
                   </span>
                   <span className={`plan-billing${plan.billing[billing] ? '' : ' is-empty'}`}>
-                    {plan.billing[billing] || '\u00A0'}
+                    {plan.billing[billing] || ' '}
                   </span>
                 </div>
               </div>
